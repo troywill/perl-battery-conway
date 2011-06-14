@@ -8,14 +8,7 @@ use Carp;
 # Encapsulated class data
 
 	my %_attr_data =	#	DEFAULT	ACCESSIBILITY
-		(	_name	=> [	'???',	'read'],
-			_artist	=> [	'???',	'read'],
-			_publisher	=> [	'???',	'read'],
-			_ISBN	=> [	'???',	'read'],
-			_tracks	=> [	'???',	'read'],
-			_rating	=> [	-1,	'read/write'],
-			_room	=> [	'uncataloged',	'read/write'],
-			_shelf	=> [	"",	'read/write'],
+		(	_remaining_capacity => ['???',	'read']
 		);
 
 	my $_count = 0;
