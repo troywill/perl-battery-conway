@@ -1,4 +1,4 @@
-package CD::Music;
+package Computer::Battery;
 $VERSION = 1.00;
 use strict;
 use vars qw( $AUTOLOAD );   # Keep 'use strict' happy
