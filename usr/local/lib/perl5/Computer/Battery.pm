@@ -39,7 +39,8 @@ use Carp;
 
     sub remaining_capacity {
       my ($self, $remaining_capacity) = @_;
-      $self->{_remaining_capacity} = 100;
+      my $capacity = `grep remaining /proc/acpi/battery/BAT0/state`;
+      $self->{_remaining_capacity} = $capacity;
       return $self->{_remaining_capacity};
     }
 

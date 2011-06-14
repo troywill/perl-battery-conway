@@ -5,11 +5,16 @@ use lib '/usr/local/lib/perl5';
 use Computer::Battery;
 
 # Create an object storing a CD's details
-my $cd = Computer::Battery->new(
+my $battery = Computer::Battery->new(
 );
 
+print $battery->remaining_capacity, "\n";  # Global symbol "$cd" requires explicit package name
+
+__END__
+
+
 # What's the CD called?
-print $cd->get_name, "\n";  # Global symbol "$cd" requires explicit package name
+
 
 # Where would we find it?
 printf "Room %s, shelf %s\n", $cd->get_location;
