@@ -1,0 +1,31 @@
+#!/usr/bin/env perl
+use warnings;
+use strict;
+use lib '/usr/local/lib/perl5';
+use CD::Music;
+
+# Create an object storing a CD's details
+my $cd = CD::Music->new(
+    name      => "Piano Concerto 20",
+    artist    => "Mozart",
+    rating    => 10,
+    room      => 5,
+    shelf     => 1,
+    publisher => "Salieri Intl.",
+    ISBN      => "1426-43235624-2",
+);
+
+# What's the CD called?
+print $cd->get_name, "\n";  # Global symbol "$cd" requires explicit package name
+
+# Where would we find it?
+printf "Room %s, shelf %s\n", $cd->get_location;
+
+# Move it to room 5, shelf 3
+$cd->set_location( 5, 3 );
+printf "Room %s, shelf %s\n", $cd->get_location;
+
+eval { $cd->set_name("Tacobell Cannon") } or print $@;
+eval { $cd->set_tracks(1000) }            or print $@;
+
+print "There have been ", CD::Music->get_count(), " CDs created\n";
