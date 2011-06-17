@@ -14,7 +14,7 @@ while (1) {
     my $capacity = $battery->get_capacity;
     print "=> $capacity <=\n";
     sleep 10;
-    if ( $capacity <= 3600 ) {
+    if ( $capacity <= 3650 ) {
 	system("sudo halt");
     }
 }
