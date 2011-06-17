@@ -3,27 +3,6 @@ use warnings;
 use strict;
 use lib '/usr/local/lib/perl5';
 use Computer::Battery;
+my $battery = Computer::Battery->new();
+$battery->print_state;
 
-# Create an object storing a CD's details
-my $battery = Computer::Battery->new(
-);
-
-print $battery->remaining_capacity, "\n";  # Global symbol "$cd" requires explicit package name
-
-__END__
-
-
-# What's the CD called?
-
-
-# Where would we find it?
-printf "Room %s, shelf %s\n", $cd->get_location;
-
-# Move it to room 5, shelf 3
-$cd->set_location( 5, 3 );
-printf "Room %s, shelf %s\n", $cd->get_location;
-
-eval { $cd->set_name("Tacobell Cannon") } or print $@;
-eval { $cd->set_tracks(1000) }            or print $@;
-
-print "There have been ", CD::Music->get_count(), " CDs created\n";
