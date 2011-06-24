@@ -81,9 +81,23 @@ sub get_location	{ ($_[0]->get_room(), $_[0]->get_shelf()) }
 
 sub do_state {
     my $self = shift;
-    print $self;
-    print `date`;
-    $self->set_state(99);
+    open( my $state, "<", "/proc/acpi/battery/BAT0/state" ) or warn "not able to open state file";
+    while (<$state>) {
+        if ( /remaining/ ) {
+            my @array = split;
+            my $remaining_capacity = $array[2];
+        #    $self->remaining_capacity($remaining_capacity);
+        } elsif ( /charging state/ ) {
+            my @array = split;
+            my $charging_state = $array[2];
+	    $self->set_state($charging_state);
+        } elsif ( /present rate/ ) {
+            my @array = split;
+            my $present_rate = $array[2];
+#            $self->present_rate($present_rate);
+        }
+    }
+    close $state;
     return;
 }
 
@@ -105,7 +119,6 @@ sub AUTOLOAD
 	# Was it a set_... method? 
 	if ($AUTOLOAD =~ /.*::set(_\w+)/ && $self->_accessible($1,'write'))
 	{
-	    print "DEBUG:L106";
 		my $attr_name = $1;
 		*{$AUTOLOAD} = sub { $_[0]->{$attr_name} = $_[1] };
 		$self->{$1} = $newval;
