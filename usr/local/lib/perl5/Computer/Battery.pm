@@ -8,14 +8,7 @@ use Carp;
 # Encapsulated class data
 
 	my %_attr_data =	#	DEFAULT	ACCESSIBILITY
-		(	_name	=> [	'???',	'read'],
-			_artist	=> [	'???',	'read'],
-			_publisher	=> [	'???',	'read'],
-			_ISBN	=> [	'???',	'read'],
-			_tracks	=> [	'???',	'read'],
-			_rating	=> [	-1,	'read/write'],
-			_room	=> [	'uncataloged',	'read/write'],
-			_shelf	=> [	"",	'read/write'],
+		(	_state	=> [	'???',	'read/write']
 		);
 
 	my $_count = 0;
@@ -85,22 +78,23 @@ sub DESTROY
 # get or set room&shelf together
 
 sub get_location	{ ($_[0]->get_room(), $_[0]->get_shelf()) }
-sub set_location
-{
-	my ($self, $room, $shelf) = @_;
-	$self->set_room($room) if $room;
-	$self->set_shelf($shelf) if $shelf;
-	return;
+
+sub do_state {
+    my $self = shift;
+    print $self;
+    print `date`;
+    $self->set_state(99);
+    return;
 }
 
-# Implement other get_É and set_É methods (create as necessary)
+# Implement other get_... and set_... methods (create as necessary)
 
 sub AUTOLOAD
 {
 	no strict "refs";
 	my ($self, $newval) = @_;
 
-	# Was it a get_É method?
+	# Was it a get_... method?
 	if ($AUTOLOAD =~ /.*::get(_\w+)/ && $self->_accessible($1,'read'))
 	{
 		my $attr_name = $1;
@@ -108,16 +102,17 @@ sub AUTOLOAD
 		return $self->{$attr_name}
 	}
 
-	# Was it a set_É method? 
+	# Was it a set_... method? 
 	if ($AUTOLOAD =~ /.*::set(_\w+)/ && $self->_accessible($1,'write'))
 	{
+	    print "DEBUG:L106";
 		my $attr_name = $1;
 		*{$AUTOLOAD} = sub { $_[0]->{$attr_name} = $_[1] };
 		$self->{$1} = $newval;
 		return
 	}
 	
-	# Must have been a mistake thenÉ
+	# Must have been a mistake then...
 	croak "No such method: $AUTOLOAD";
 }
 
