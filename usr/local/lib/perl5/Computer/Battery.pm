@@ -1,6 +1,7 @@
 package Computer::Battery;
 use Moose;
 has 'remaining_capacity' => (isa => 'Int', is => 'rw', default => 0);
+has 'present_rate' => (isa => 'Str', is => 'rw', default => "0 mA");
 has 'present' => (isa => 'Str', is => 'rw', default => "no");
 has 'charging_state' => (isa => 'Str', is => 'rw', default => "charged");
 
@@ -16,7 +17,11 @@ sub get_capacity {
 
 sub print_state {
     my $self = shift;
-    print $self->charging_state(), "\n";
+    my $charging_state = $self->charging_state();
+    if ( $charging_state eq "charging" ) {
+	my $present_rate = $self->present_rate;
+	print "Battery is $charging_state at rate of $present_rate mA.\n";
+    }
     print $self->remaining_capacity(), "\n";
 }
 
@@ -32,6 +37,10 @@ sub set_state {
 	    my @array = split;
 	    my $charging_state = $array[2];
 	    $self->charging_state($charging_state);
+	} elsif ( /present rate/ ) {
+	    my @array = split;
+	    my $present_rate = $array[2];
+	    $self->present_rate($present_rate);
 	}
     }
     close $state;
