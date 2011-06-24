@@ -6,9 +6,10 @@ use Carp;
 
 {
 # Encapsulated class data
-
 	my %_attr_data =	#	DEFAULT	ACCESSIBILITY
-		(	_state	=> [	'???',	'read/write']
+		(
+		 _state	=> [	'???',	'read/write'],
+		 _remaining_capacity	=> [	'???',	'read/write']
 		);
 
 	my $_count = 0;
@@ -34,15 +35,6 @@ use Carp;
 		keys %_attr_data;
 	}
 
-	# Retrieve object count
-	sub get_count
-	{
-		$_count;
-	}
-
-	# Private count increment/decrement methods
-	sub _incr_count { ++$_count }
-	sub _decr_count { --$_count }
 					
 }
 # Constructor may be called as a class method
@@ -66,7 +58,6 @@ sub new
 		else
 			{ $self->{$membername} = $self->_default_for($membername) }
 	}
-	$self->_incr_count();
 	return $self;
 }
 
@@ -86,7 +77,7 @@ sub do_state {
         if ( /remaining/ ) {
             my @array = split;
             my $remaining_capacity = $array[2];
-        #    $self->remaining_capacity($remaining_capacity);
+            $self->set_remaining_capacity($remaining_capacity);
         } elsif ( /charging state/ ) {
             my @array = split;
             my $charging_state = $array[2];
@@ -98,6 +89,14 @@ sub do_state {
         }
     }
     close $state;
+    return;
+}
+
+sub print_state {
+    my $self = shift;
+    my $state =  $self->get_state;
+    my $remaining_capacity = $self->get_remaining_capacity;
+    print "$state, $remaining_capacity\n";
     return;
 }
 
