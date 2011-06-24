@@ -2,6 +2,7 @@ package Computer::Battery;
 use Moose;
 has 'remaining_capacity' => (isa => 'Int', is => 'rw', default => 0);
 has 'present' => (isa => 'Str', is => 'rw', default => "no");
+has 'charging_state' => (isa => 'Str', is => 'rw', default => "charged");
 
 sub BUILD {
     my $self = shift;
@@ -15,6 +16,7 @@ sub get_capacity {
 
 sub print_state {
     my $self = shift;
+    print $self->charging_state(), "\n";
     print $self->remaining_capacity(), "\n";
 }
 
@@ -26,6 +28,10 @@ sub set_state {
 	    my @array = split;
 	    my $remaining_capacity = $array[2];
 	    $self->remaining_capacity($remaining_capacity);
+	} elsif ( /charging state/ ) {
+	    my @array = split;
+	    my $charging_state = $array[2];
+	    $self->charging_state($charging_state);
 	}
     }
     close $state;
@@ -40,5 +46,3 @@ has 'charging' => (isa => , is => 'rw', default => );
 has 'present' => (isa => , is => 'rw', default => );
 has 'remaining' => (isa => , is => 'rw', default => );
 has 'present' => (isa => , is => 'rw', default => );
-
-
