@@ -9,7 +9,8 @@ use Carp;
 	my %_attr_data =	#	DEFAULT	ACCESSIBILITY
 		(
 		 _state	=> [	'???',	'read/write'],
-		 _remaining_capacity	=> [	'???',	'read/write']
+		 _remaining_capacity	=> [	'???',	'read/write'],
+		 _present_voltage	=> [	'???',	'read/write']
 		);
 
 	my $_count = 0;
@@ -66,11 +67,8 @@ sub DESTROY
 {
 	$_[0]->_decr_count();
 }
-# get or set room&shelf together
 
-sub get_location	{ ($_[0]->get_room(), $_[0]->get_shelf()) }
-
-sub do_state {
+sub read_state {
     my $self = shift;
     open( my $state, "<", "/proc/acpi/battery/BAT0/state" ) or warn "not able to open state file";
     while (<$state>) {
@@ -86,6 +84,10 @@ sub do_state {
             my @array = split;
             my $present_rate = $array[2];
 #            $self->present_rate($present_rate);
+        } elsif ( /present voltage/ ) {
+            my @array = split;
+            my $present_voltage = $array[2];
+            $self->set_present_voltage($present_voltage);
         }
     }
     close $state;
@@ -95,8 +97,9 @@ sub do_state {
 sub print_state {
     my $self = shift;
     my $state =  $self->get_state;
-    my $remaining_capacity = $self->get_remaining_capacity;
-    print "$state, $remaining_capacity\n";
+    my $remaining_capacity = $self->get_remaining_capacity / 1000;
+    my $present_voltage = $self->get_present_voltage / 1000;
+    print "$state, $remaining_capacity A, $present_voltage V\n";
     return;
 }
 
