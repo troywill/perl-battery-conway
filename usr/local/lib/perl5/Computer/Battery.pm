@@ -5,7 +5,6 @@ use vars qw( $AUTOLOAD );    # Keep 'use strict' happy
 use Carp;
 
 {
-
     # Encapsulated class data
     my %_attr_data =         #	DEFAULT	ACCESSIBILITY
       (
@@ -13,11 +12,8 @@ use Carp;
         _remaining_capacity => [ '???', 'read/write' ],
         _present_voltage    => [ '???', 'read/write' ]
       );
-
     my $_count = 0;
-
     # Class methods, to operate on encapsulated class data
-
     # Is a specified object attribute accessible in a given mode
     sub _accessible {
         my ( $self, $attr, $mode ) = @_;
@@ -97,7 +93,7 @@ sub print_state {
     my $state              = $self->get_state;
     my $remaining_capacity = $self->get_remaining_capacity / 1000;
     my $present_voltage    = $self->get_present_voltage / 1000;
-    print "$state, $remaining_capacity A, $present_voltage V\n";
+    print "$state, $remaining_capacity Ah, $present_voltage V\n";
     return;
 }
 
