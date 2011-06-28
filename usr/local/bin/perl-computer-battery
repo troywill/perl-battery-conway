@@ -3,6 +3,7 @@ use warnings;
 use strict;
 use lib '/usr/local/lib/perl5';
 use Computer::Battery;
+exit;
 my $battery = Computer::Battery->new();
 $battery->print_state;
 
