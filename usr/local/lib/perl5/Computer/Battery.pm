@@ -91,9 +91,9 @@ sub read_state {
 sub print_state {
     my $self               = shift;
     my $state              = $self->get_state;
-    my $remaining_capacity = $self->get_remaining_capacity / 1000;
-    my $present_voltage    = $self->get_present_voltage / 1000;
-    print "$state, $remaining_capacity Ah, $present_voltage V\n";
+    my $remaining_capacity = $self->get_remaining_capacity;
+    my $present_voltage    = $self->get_present_voltage;
+    print "$state, $remaining_capacity mAh, $present_voltage mV\n";
     return;
 }
 

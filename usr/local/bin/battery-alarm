@@ -4,35 +4,16 @@ use strict;
 use lib '/usr/local/lib/perl5';
 use Computer::Battery;
 
-# Create an object storing a CD's details
 my $battery = Computer::Battery->new(
 );
 
 while (1) {
-    $battery->set_state;
-    $battery->print_state;
-    my $capacity = $battery->get_capacity;
-    print "=> $capacity <=\n";
+    $battery->read_state;
+    my $capacity = $battery->get_remaining_capacity;
+    my $state = $battery->get_state;
+    print "=> $state, $capacity <=\n";
     sleep 10;
-    if ( $capacity <= 3650 ) {
-	system("sudo halt");
+    if ( ($capacity <= 3000) && ( $state ne "charging"  ) ) {
+     	system("sudo halt");
     }
 }
-
-__END__
-
-
-# What's the CD called?
-
-
-# Where would we find it?
-printf "Room %s, shelf %s\n", $cd->get_location;
-
-# Move it to room 5, shelf 3
-$cd->set_location( 5, 3 );
-printf "Room %s, shelf %s\n", $cd->get_location;
-
-eval { $cd->set_name("Tacobell Cannon") } or print $@;
-eval { $cd->set_tracks(1000) }            or print $@;
-
-print "There have been ", CD::Music->get_count(), " CDs created\n";
